@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9ecb, #ff4d6d, #ff758f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+/* Card */
+.card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05));
+    border-radius: 24px;
+    padding: 30px 30px 40px;
+    width: 380px;
+    max-width: 92vw;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+/* Romantic message font */
+h1, #successScreen {
+    font-family: "Brush Script MT", "Lucida Handwriting", "Segoe Script", cursive;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 34px;
+    margin: 18px 0 10px;
+    animation: pulse 2s infinite;
+}
+
+/* Photo */
+.photo {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid rgba(255,255,255,0.8);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Buttons container */
+.buttons {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    height: 70px;
+}
+
+/* Button font — different from message */
+button {
+    padding: 14px 22px;
+    font-size: 16px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: "Segoe UI", Verdana, Arial, sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: transform .15s;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#yesBtn {
+    background: linear-gradient(135deg, #ff2e63, #ff6f91);
+    color: white;
+}
+
+#noBtn {
+    position: absolute;
+    left: 55%;
+    background: white;
+    color: #ff2e63;
+}
+
+/* Success screen */
+#successScreen {
+    display: none;
+    font-size: 36px;
+    line-height: 1.4;
+    animation: fadeIn 1s ease forwards;
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 18px;
+    animation: rise 6s linear infinite;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+@keyframes rise {
+    from { transform: translateY(0) scale(1); opacity: .9; }
+    to { transform: translateY(-110vh) scale(1.6); opacity: 0; }
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div id="mainContent">
+        <img class="photo" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400">
+        <h1>Will you be my Valentine? ❤️</h1>
+
+        <div class="buttons" id="buttonArea">
+            <button id="yesBtn">YES 💖</button>
+            <button id="noBtn">NO 😢</button>
+        </div>
+    </div>
+
+    <div id="successScreen">
+        💘 You said YES! 💘<br>
+        My heart is yours ❤️
+    </div>
+</div>
+
+<script>
+/* YES click → show only message */
+document.getElementById("yesBtn").onclick = function() {
+    document.getElementById("mainContent").style.display = "none";
+    document.getElementById("successScreen").style.display = "block";
+    spawnHearts(40);
+};
+
+/* NO button runaway */
+const noBtn = document.getElementById("noBtn");
+const area = document.getElementById("buttonArea");
+
+area.addEventListener("mousemove", function(e) {
+    const rect = noBtn.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width/2);
+    const dy = e.clientY - (rect.top + rect.height/2);
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < 90) moveNoButton();
+});
+
+function moveNoButton() {
+    const maxX = area.clientWidth - noBtn.offsetWidth;
+    const maxY = area.clientHeight - noBtn.offsetHeight;
+    noBtn.style.left = Math.random()*maxX + "px";
+    noBtn.style.top = Math.random()*maxY + "px";
+}
+
+/* Hearts */
+function spawnHearts(count) {
+    for (let i=0;i<count;i++) {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "❤";
+        h.style.left = Math.random()*100 + "vw";
+        h.style.animationDuration = (4 + Math.random()*3) + "s";
+        h.style.fontSize = (14 + Math.random()*18) + "px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),7000);
+    }
+}
+</script>
+
+</body>
+</html>
